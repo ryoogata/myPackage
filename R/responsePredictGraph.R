@@ -9,12 +9,13 @@ responsePredictGraph <- function(DATA, MODEL){
     arrange((response))
 
   # 予測
-  if(class(MODEL) == "train"){
-    df_pred_sort <- predict(MODEL, newdata = response_sort)
-  } else if(class(MODEL) == "ranger"){
+  if(class(MODEL) == "ranger"){
     df_pred_sort <- predict(MODEL, data = response_sort)["predictions"] %>%
       magrittr::extract2(1)
+  } else {
+    df_pred_sort <- predict(MODEL, newdata = response_sort)
   }
+
 
   ggplot(response_sort) +
     geom_line(aes(x = 1:nrow(response_sort), y = df_pred_sort ,color = "b")) +
